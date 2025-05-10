@@ -1,7 +1,11 @@
 @import url(home.css);
+@import url(about.css);
 
 body{
     background-color: #faebd7;
+    height: 100%;
+    margin: 0;
+    min-height: 100VH;
 }
 *{
     text-decoration: none;
@@ -38,7 +42,7 @@ body{
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 1%;
 }
 .navdiv .logo{
     flex: 1;
@@ -56,7 +60,7 @@ li a{
     color: #000000;
     font-size: 18px;
     font-weight: bold;
-    margin-right: 25px;
+    margin-right: 5%;
     padding: 5px 10px;
     transition: background-color 0.3s ease;
 }
@@ -64,4 +68,76 @@ li a:hover{
     background-color: #e389bd;
     color: #FFFFFF;
     border-radius: 5px;
+}
+footer{
+    background-color: #602740;
+    width: 100%;
+    margin-top: auto;
+    padding: 20px 0;
+}
+.section4{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px;
+    position: relative;
+    align-items: center;
+}
+.logo-footer {
+    position: absolute;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+.logo-footer img {
+    height: 200px;
+    width: auto;
+}
+.footer-menu{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+.footer-menu ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+@media only screen and (max-width: 600px) {
+.navdiv {
+    flex-direction: column;
+    align-items: center;
+}
+.navdiv ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+}
+li a {
+    font-size: 16px;
+    margin-right: 0;
+}
+.section4 {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.logo-footer {
+    position: static;
+    margin-bottom: 20px;
+}
+.logo-footer img {
+    height: 100px;
+}
+.footer-menu ul {
+    flex-direction: column;
+    gap: 5px;
+}
+.footer-menu a {
+    font-size: 16px;
+}
 }

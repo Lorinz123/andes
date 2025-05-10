@@ -1,0 +1,33 @@
+*{
+    text-decoration: none;
+}
+.about1-section1{
+    background-image: url(../image/aboutme1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    place-items: center left;
+}
+.about1-div1{
+    border-style: hidden;
+    display: grid;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    padding: 10%;
+    gap: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.about1-div1 h1{
+    font-weight: bold;
+    font-size: 50px;
+}
+.about1-div1 p{
+    font-weight: bold;
+    font-size: 25px;
+}
