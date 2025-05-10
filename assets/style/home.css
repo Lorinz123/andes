@@ -1,0 +1,227 @@
+*{
+    text-decoration: none;
+}
+.section1{
+    height: 100vh;
+    color: white;
+    display: flex;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    animation: backgroundChange 30s infinite;
+}
+@keyframes backgroundChange {
+    0% { background-image: url(../image/bouquet1.jpg);}
+    33% { background-image: url(../image/bouquet2.jpg);}
+    66% { background-image: url(../image/bouquet3.jpg);}
+    100% { background-image: url(../image/bouquet1.jpg);}
+}
+.section1-div{
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    border: hidden;
+    background-color: #fff3ff;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+    flex-direction: column;
+    margin-left: 70%;
+    text-align: center;
+    margin-bottom: 9%;
+    opacity: 0.8;
+    border-radius: 50px;
+}
+.section1-div2 {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    margin-bottom: 30%;
+    text-shadow: 3px 3px #faebd7;
+}
+.section1-div h1{
+    font-weight: bold;
+    font-size: 50px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 20%;
+}
+.section1-div2 p{
+    font-weight: bold;
+    font-size: 30px;
+}
+.section1-button{
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.section1-button button{
+    padding: 10px 50px 10px 50px;
+    margin-bottom: 20%;
+}
+.section1-button button:hover {
+    transform: scale(1.05);
+    background-color: #000000;
+    color: #FFFFFF;
+}
+.section2-div{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 1%;
+    gap: 5px;
+}
+.section2-div h2{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 50px;
+    font-weight: bold;
+}
+.section2-div p{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 40px;
+    font-weight: bold;
+}
+.section2-img{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 3px;
+    margin-top: 20px;
+    align-items: center;
+}
+.img1{
+    border-style: solid;
+    border-radius: 50px;
+    width: fit-content;
+    height: fit-content;
+}
+.img2{
+    border-style: solid;
+    border-radius: 50px;
+    width: fit-content;
+    height: fit-content;
+}
+.img3{
+    border-style: solid;
+    border-radius: 50px;
+    width: fit-content;
+    height: fit-content;
+}
+.section2-button2{
+    padding: 10px 30px 10px 30px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.section2-button2 button{
+    padding: 20px;
+    background-color: #fff0f9;
+}
+.section2-button2 button:hover {
+    transform: scale(1.05);
+    background-color: #000000;
+    color: #FFFFFF;
+}
+.section3{
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
+}
+.wedding1{
+    margin-right: 1%;
+    border-radius: 10px;
+    width: fit-content;
+    width: fit-content;
+}
+.section3{
+    background-image: url('/assets/image/wedding-1.jpg');
+    background-size: 50% 100%;
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+.section3-div{
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    border: hidden;
+    background-color: #fff3ff;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+    flex-direction: column;
+    margin-right: 60%;
+    text-align: center;
+    margin-bottom: 9%;
+    border-radius: 50px;
+    gap: 90px;
+    padding-bottom: 5%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+.section3-div h3{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+.section3-div p{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-items: center;
+}
+.section3-div button{
+    color: black;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 20px;
+}
+.section3-div button:hover{
+    transform: scale(1.05);
+    background-color: #393939;
+    color: #FFFFFF;
+}
+.logo-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    margin-left: 30%;
+}
+  
+.logo-footer img {
+    height: 200px;
+    width: auto;
+}
+  
+.logo-footer p {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: #e389bd;
+    margin: 0;
+    font-size: xx-large;
+}
+.footer {
+    padding: 20px;
+    background-color: #f1f1f1; /* or your footer bg */
+}
+.footer-nav {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px; 
+    padding: 0;
+    margin: 0;
+}
+.footer-nav li a {
+    text-decoration: none;
+    color: #e389bd;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
