@@ -77,7 +77,8 @@ footer{
 }
 .section4{
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
+    flex-direction: column;
     align-items: flex-start;
     padding: 20px;
     position: relative;
