@@ -21,7 +21,7 @@
     align-items: center;
     padding: 10%;
     gap: 10px;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .about1-div1 h1{
     font-weight: bold;
@@ -165,7 +165,11 @@
     font-size: 1.1em;
     color: #555;
 }
-@media (max-width: 768px) {
+.contact-item ul{
+    display: flex;
+    flex-direction: column;
+}
+@media only screen and (max-width: 768px) {
 .about1-section1 {
     height: auto;
     padding: 50px 10px;
