@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="../assets/style/admin.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Panel</h1>
+    <button id="backBtn" onclick="window.location.href='../index.html'">← Back to home</button>
+  </header>
+
+  <main>
+    <section class="admin-card">
+      <h2>Manage Products</h2>
+      <button id="addProductBtn">+ Add Product</button>
+
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="form-card" id="productFormSection">
+      <h2 id="formTitle">Add Product</h2>
+      <form id="productForm">
+        <input type="hidden" id="editIndex">
+        <label>Name:</label>
+        <input type="text" id="productName" required>
+
+        <label>Price:</label>
+        <input type="number" id="productPrice" required>
+
+        <label>Stock:</label>
+        <input type="number" id="productStock" required>
+
+        <label>Image URL:</label>
+        <input type="text" id="productImage" placeholder="Paste image link here" required>
+
+        <button type="submit" id="saveProductBtn">Save</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+  <script>
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+const productTable = document.querySelector("#productTable tbody");
+const addProductBtn = document.getElementById("addProductBtn");
+const formSection = document.getElementById("productFormSection");
+const form = document.getElementById("productForm");
+const formTitle = document.getElementById("formTitle");
+const editIndex = document.getElementById("editIndex");
+
+// Form inputs
+const productName = document.getElementById("productName");
+const productPrice = document.getElementById("productPrice");
+const productStock = document.getElementById("productStock");
+const productImage = document.getElementById("productImage");
+
+function renderProducts() {
+  productTable.innerHTML = "";
+  if (products.length === 0) {
+    productTable.innerHTML = "<tr><td colspan='5'>No products available.</td></tr>";
+    return;
+  }
+
+  products.forEach((p, i) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><img src="${p.image}" alt="${p.name}"></td>
+      <td>${p.name}</td>
+      <td>₱${p.price}</td>
+      <td>${p.stock}</td>
+      <td>
+        <button class="edit" onclick="editProduct(${i})">Edit</button>
+        <button class="delete" onclick="deleteProduct(${i})">Delete</button>
+      </td>
+    `;
+    productTable.appendChild(row);
+  });
+}
+
+// Add new product
+addProductBtn.addEventListener("click", () => {
+  form.reset();
+  editIndex.value = "";
+  formTitle.textContent = "Add Product";
+  formSection.scrollIntoView({ behavior: "smooth" });
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const productData = {
+    name: productName.value,
+    price: parseFloat(productPrice.value),
+    stock: parseInt(productStock.value),
+    image: productImage.value
+  };
+
+  if (editIndex.value === "") {
+    products.push(productData);
+  } else {
+    products[editIndex.value] = productData;
+  }
+
+  localStorage.setItem("products", JSON.stringify(products));
+  form.reset();
+  editIndex.value = "";
+  renderProducts();
+});
+
+// Edit product
+function editProduct(i) {
+  const p = products[i];
+  productName.value = p.name;
+  productPrice.value = p.price;
+  productStock.value = p.stock;
+  productImage.value = p.image;
+  editIndex.value = i;
+  formTitle.textContent = "Edit Product";
+  formSection.scrollIntoView({ behavior: "smooth" });
+}
+
+// Delete product
+function deleteProduct(i) {
+  if (confirm("Delete this product?")) {
+    products.splice(i, 1);
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+  }
+}
+
+renderProducts();
+
+  </script>
+</body>
+</html>

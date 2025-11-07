@@ -1,0 +1,117 @@
+* {
+  text-decoration: none;
+}
+
+body {
+  background-color: #faebd7;
+  height: 100%;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Georgia', serif;
+  color: #000;
+}
+
+/* Keep footer at bottom */
+main {
+  flex: 1;
+}
+
+/* NAVBAR STYLES */
+.navbar {
+  background-color: #611B35;
+  font-family: 'Times New Roman', Times, serif;
+  width: 100%;
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navdiv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* logo left, links right */
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 80px;
+  width: 80px;
+  margin-right: 10px;
+}
+
+.logo p {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  color: #e389bd;
+  font-size: 22px;
+  margin: 0;
+}
+
+/* NAV LINKS */
+.navdiv ul {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* spacing between links */
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+li a {
+  color: #000000;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+li a:hover {
+  background-color: #e389bd;
+  color: #ffffff;
+}
+
+footer {
+  background-color: #661b34;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.checkmark {
+  font-size: 70px;
+  color: #661b34;
+}
+
+.checkout-title {
+  font-size: 60px;
+  margin-bottom: 30px;
+}
+
+.btn-custom {
+  background-color: #661b34;
+  color: white;
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-size: 18px;
+}
+
+.btn-custom:hover {
+  background-color: #82254a;
+}

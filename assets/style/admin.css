@@ -1,0 +1,130 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f5f7;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #2a2d43;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px;
+  flex-wrap: wrap;
+}
+
+/* Cards */
+.admin-card, .form-card {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 500px;
+}
+
+.admin-card h2, .form-card h2 {
+  margin-top: 0;
+  color: #2a2d43;
+}
+
+#addProductBtn {
+  background: #2a2d43;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-weight: 500;
+}
+#addProductBtn:hover {
+  background: #3b3e5a;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+td img {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+}
+button.edit, button.delete {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+button.edit {
+  background-color: #3498db;
+}
+button.delete {
+  background-color: #e74c3c;
+}
+button.edit:hover {
+  background-color: #2980b9;
+}
+button.delete:hover {
+  background-color: #c0392b;
+}
+
+/* Form */
+#productForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#productForm input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+#saveProductBtn {
+  background: #2a2d43;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+#saveProductBtn:hover {
+  background: #3b3e5a;
+}
+#backBtn {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  background: #fff;
+  color: #2a2d43;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#backBtn:hover {
+  background: #3b3e5a;
+  color: #fff;
+  border-color: #3b3e5a;
+}

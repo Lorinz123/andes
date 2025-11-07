@@ -1,0 +1,147 @@
+*{
+    text-decoration: none;
+}
+body {
+    background-color: #faebd7;
+    height: 100%;
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo img{
+    float: left;
+    height: 100px;
+    width: 100px;
+}
+.logo p{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: #e389bd;
+}
+.navbar{
+    background-color: #611B35;
+    font-family: 'Times New Roman', Times, serif;
+    width: 100%;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    background-color: #611B35;
+    z-index: 1000;
+    padding: 10px 0;
+}
+.navdiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 0 1%;
+}
+.navdiv .logo{
+    flex: 1;
+}
+.navdiv ul{
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+li{
+    list-style: none;
+    display: inline-block;
+}
+li a{
+    color: #000000;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 5%;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+li a:hover{
+    background-color: #e389bd;
+    color: #FFFFFF;
+    border-radius: 5px;
+}
+
+main {
+  width: 80%;
+  margin: 40px auto;
+}
+
+h1 {
+  font-size: 2em;
+  border-bottom: 2px solid black;
+  padding-bottom: 5px;
+}
+
+.back-btn {
+  float: right;
+  background: #651D32;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cart-table {
+  margin-top: 60px;
+}
+
+.cart-header, .cart-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+
+.cart-item img {
+  width: 90px;
+  border-radius: 10px;
+}
+
+.quantity-btn {
+  background: none;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.subtotal {
+  margin-top: 40px;
+  text-align: right;
+  border-top: 1px solid #000;
+  padding-top: 10px;
+}
+
+#checkout-btn {
+  margin-top: 10px;
+  background-color: #651D32;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  background-color: #651D32;
+  color: white;
+  padding: 10px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}

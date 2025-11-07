@@ -189,6 +189,43 @@
     background-color: #393939;
     color: #FFFFFF;
 }
+.section4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 20px 40px;
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.footer-text {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  margin: 0;
+  font-size: 16px;
+}
+
+.footer-right {
+  position: absolute;
+  right: 40px;
+}
+
+.admin-btn {
+  background-color: #e389bd;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Times New Roman', Times, serif;
+  transition: background-color 0.3s ease;
+}
+
+.admin-btn:hover {
+  background-color: #b35d8d;
+}
 @media only screen and (max-width: 768px) {
 .section1-div {
     margin: 20px auto;
