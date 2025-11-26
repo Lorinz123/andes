@@ -10,13 +10,13 @@
 <header>
 <nav class="navbar">
     <div class="navdiv">
-        <div class="logo"><a href="../index.html"><img src="../assets/image/logo.png" alt="logo"></a>
-        <a href="../index.html"><p>FLOWER PUFF</p></a>
+        <div class="logo"><a href="../index.php"><img src="../assets/image/logo.png" alt="logo"></a>
+        <a href="../index.php"><p>FLOWER PUFF</p></a>
         </div>
         <ul>
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="./shop.html">Shop</a></li>
-            <li><a href="./about.html">About</a></li>
+            <li><a href="../index.php">Home</a></li>
+            <li><a href="./shop.php">Shop</a></li>
+            <li><a href="./about.php">About</a></li>
         </ul>
     </div>
 </nav>

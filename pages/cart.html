@@ -10,13 +10,13 @@
 <header>
 <nav class="navbar">
     <div class="navdiv">
-        <div class="logo"><a href="../index.html"><img src="../assets/image/logo.png" alt="logo"></a>
-        <a href="../index.html"><p>FLOWER PUFF</p></a>
+        <div class="logo"><a href="../index.php"><img src="../assets/image/logo.png" alt="logo"></a>
+        <a href="../index.php"><p>FLOWER PUFF</p></a>
         </div>
         <ul>
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="./shop.html">Shop</a></li>
-            <li><a href="./about.html">About</a></li>
+          <li><a href="../index.php">Home</a></li>
+          <li><a href="./shop.php">Shop</a></li>
+          <li><a href="./about.php">About</a></li>
         </ul>
     </div>
 </nav>
@@ -41,6 +41,7 @@
       <a href="../pages/checkout.html">
       <button id="checkout-btn">Proceed to checkout</button>
       </a>
+      <div id="cartMessage" style="color:#b00020;font-weight:600;margin-top:8px;display:none;"></div>
     </div>
   </main>
 
@@ -91,6 +92,29 @@ function changeQty(index, amount) {
 }
 
 renderCart();
+
+// Prevent proceeding to checkout when cart is empty — show inline message
+document.addEventListener('DOMContentLoaded', function() {
+  const checkoutLink = document.querySelector('.subtotal a');
+  const cartMessage = document.getElementById('cartMessage');
+  function showCartMessage(msg) {
+    if (!cartMessage) return;
+    cartMessage.textContent = msg;
+    cartMessage.style.display = 'block';
+    window.scrollTo({ top: cartMessage.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+    setTimeout(() => { cartMessage.style.display = 'none'; }, 5000);
+  }
+
+  if (checkoutLink) {
+    checkoutLink.addEventListener('click', function(e) {
+      const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (!currentCart || currentCart.length === 0) {
+        e.preventDefault();
+        showCartMessage('Your cart is empty. Add items before proceeding to checkout.');
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>

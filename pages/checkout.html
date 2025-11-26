@@ -17,9 +17,9 @@
         <p>FLOWER PUFF</p>
       </div>
       <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="../index.php">Home</a></li>
+        <li><a href="shop.php">Shop</a></li>
+        <li><a href="about.php">About</a></li>
       </ul>
     </div>
   </nav>
@@ -29,6 +29,7 @@
     <h1>CHECKOUT</h1>
 
     <form id="checkoutForm">
+      <div id="checkoutMessage" style="color:#b00020;font-weight:600;margin-bottom:12px;display:none;"></div>
       <!-- Personal Information -->
       <h4>Personal Information</h4>
       <div class="row mb-3">
@@ -83,6 +84,7 @@
         <input class="form-check-input" type="radio" name="payment" id="card" value="Card" required>
         <label class="form-check-label" for="card">Card</label>
       </div>
+      <div id="paymentMessage" style="color:#b00020;font-weight:600;margin-bottom:12px;display:none;"></div>
 
       <div class="btn-container">
         <button type="button" class="btn btn-custom" id="placeOrderBtn">Place Order</button>
@@ -97,30 +99,116 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.getElementById("placeOrderBtn").addEventListener("click", function() {
-      window.location.href = "success.html";
+    document.getElementById("placeOrderBtn").addEventListener("click", async function() {
+      const msgEl = document.getElementById('checkoutMessage');
+      function showMessage(text) {
+        if (!msgEl) return;
+        msgEl.textContent = text;
+        msgEl.style.display = 'block';
+        msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { msgEl.style.display = 'none'; }, 6000);
+      }
+
+      // Validate cart and required fields before proceeding
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (!cart || cart.length === 0) {
+        showMessage('Your cart is empty. Add items before placing an order.');
+        return;
+      }
+
+      const requiredIds = ['email','code','firstName','lastName','country','city','postCode','address'];
+      const missing = requiredIds.filter(id => {
+        const el = document.getElementById(id);
+        return !el || el.value.trim() === '';
+      });
+      if (missing.length > 0) {
+        showMessage('Please complete all personal and shipping information before placing your order.');
+        return;
+      }
+
+      const shippingSelected = document.querySelector('input[name="shippingMethod"]:checked');
+      if (!shippingSelected) {
+        showMessage('Please select a shipping method.');
+        return;
+      }
+
+      const paymentSelected = document.querySelector('input[name="payment"]:checked');
+      if (!paymentSelected) {
+        showMessage('Please select a payment method.');
+        return;
+      }
+
+      // All checks passed — save order summary to sessionStorage, clear cart and proceed to success page
+      try {
+        const subtotal = (cart || []).reduce((s, it) => s + (parseFloat(it.price) || 0) * (parseInt(it.quantity) || 0), 0);
+        const order = {
+          items: cart,
+          subtotal: subtotal,
+          customer: {
+            email: document.getElementById('email').value.trim(),
+            code: document.getElementById('code').value.trim(),
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            country: document.getElementById('country').value.trim(),
+            city: document.getElementById('city').value.trim(),
+            postCode: document.getElementById('postCode').value.trim()
+          },
+          shipping: document.querySelector('input[name="shippingMethod"]:checked')?.value || null,
+          payment: document.querySelector('input[name="payment"]:checked')?.value || null,
+          placedAt: new Date().toISOString()
+        };
+
+        // POST to server to persist order
+        const resp = await fetch('../api/save_order.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order)
+        });
+        const result = await resp.json();
+        if (!result || !result.success) {
+          console.error('Failed to save order:', result);
+          showMessage('Failed to place order. Please try again.');
+          return;
+        }
+
+        // store server response for success page and clear cart
+        sessionStorage.setItem('lastOrder', JSON.stringify(result.order));
+        try { localStorage.removeItem('cart'); } catch (e) { console.warn('Could not clear cart:', e); }
+        window.location.href = "success.html";
+
+      } catch (e) {
+        console.warn('Could not build order summary:', e);
+        showMessage('Failed to place order. Please try again.');
+      }
     });
 
     document.getElementById("backBtn").addEventListener("click", function() {
-      window.location.href = "shop.html";
+      window.location.href = "shop.php";
     });
 
     document.addEventListener("DOMContentLoaded", function() {
       const cardOption = document.getElementById("card");
+      const paymentMsg = document.getElementById('paymentMessage');
+
+      function showPaymentMessage(text) {
+        if (!paymentMsg) return;
+        paymentMsg.textContent = text;
+        paymentMsg.style.display = 'block';
+        paymentMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { paymentMsg.style.display = 'none'; }, 6000);
+      }
 
       cardOption.addEventListener("change", function() {
         if (cardOption.checked) {
-          const firstName = document.getElementById("firstName").value.trim();
-          const lastName = document.getElementById("lastName").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const address = document.getElementById("address").value.trim();
-          const country = document.getElementById("country").value.trim();
-          const city = document.getElementById("city").value.trim();
-          const code = document.getElementById("code").value.trim();
-          const postCode = document.getElementById("postCode").value.trim();
+          const requiredIds = ['firstName','lastName','email','address','country','city','code','postCode'];
+          const missing = requiredIds.map(id => document.getElementById(id))
+                                     .find(el => !el || el.value.trim() === '');
 
-          if (!firstName || !lastName || !email || !address || !country || !city || !code || !postCode) {
-            alert("⚠️ Please complete all personal and shipping information before selecting Card payment.");
+          if (missing) {
+            showPaymentMessage('⚠️ Please complete all personal and shipping information before selecting Card payment.');
+            // focus the first missing field if available
+            if (missing && typeof missing.focus === 'function') missing.focus();
             cardOption.checked = false;
           } else {
             window.location.href = "checkout-card.html";

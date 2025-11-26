@@ -17,9 +17,9 @@
         <p>FLOWER PUFF</p>
       </div>
       <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="../index.php">Home</a></li>
+        <li><a href="shop.php">Shop</a></li>
+        <li><a href="about.php">About</a></li>
       </ul>
     </div>
   </nav>
@@ -30,6 +30,9 @@
     <div class="checkmark my-4">✔️</div>
     <h2>Order Confirmed!</h2>
     <p>Your order has been placed successfully!</p>
+    <div id="orderSummary" class="mt-4" style="text-align:left; max-width:800px; margin:0 auto;">
+      <!-- Order details will be injected here -->
+    </div>
 
     <button class="btn btn-custom mt-4" id="continueShoppingBtn">Continue Shopping</button>
   </main>
@@ -41,8 +44,47 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    function formatCurrency(n){ return '₱' + Number(n).toFixed(2); }
+
+    function renderOrderSummary(order){
+      const container = document.getElementById('orderSummary');
+      if (!container) return;
+      if (!order || !order.items || order.items.length === 0){
+        container.innerHTML = '<p>No order details available.</p>';
+        return;
+      }
+
+      let html = `<h3>Order #: ${order.id}</h3>`;
+      html += `<p>Placed at: ${new Date(order.placedAt).toLocaleString()}</p>`;
+      if (order.customer){
+        html += `<p><strong>Customer:</strong> ${order.customer.firstName || ''} ${order.customer.lastName || ''}<br>`+
+                `${order.customer.email || ''}<br>${order.customer.address || ''}, ${order.customer.city || ''} ${order.customer.postCode || ''} ${order.customer.country || ''}</p>`;
+      }
+
+      html += '<table class="table"><thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead><tbody>';
+      order.items.forEach(it => {
+        const total = (parseFloat(it.price) || 0) * (parseInt(it.quantity) || 0);
+        html += `<tr><td style="vertical-align:middle;"><img src="${it.image}" style="width:56px;height:auto;margin-right:8px;vertical-align:middle;"> ${it.name}</td><td>${formatCurrency(it.price)}</td><td>${it.quantity}</td><td>${formatCurrency(total)}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+      html += `<p style="text-align:right;margin-top:12px;"><strong>Subtotal:</strong> ${formatCurrency(order.subtotal || 0)}</p>`;
+      if (order.payment) html += `<p><strong>Payment:</strong> ${order.payment}</p>`;
+      if (order.shipping) html += `<p><strong>Shipping:</strong> ${order.shipping}</p>`;
+
+      container.innerHTML = html;
+    }
+
+    // Try read order from sessionStorage
+    const raw = sessionStorage.getItem('lastOrder');
+    let order = null;
+    try { order = raw ? JSON.parse(raw) : null; } catch(e){ console.warn('Invalid lastOrder:', e); }
+    renderOrderSummary(order);
+
+    // Remove lastOrder so it doesn't persist on refresh
+    try { sessionStorage.removeItem('lastOrder'); } catch(e){}
+
     document.getElementById("continueShoppingBtn").addEventListener("click", function() {
-      window.location.href = "shop.html";
+      window.location.href = "shop.php";
     });
   </script>
 </body>

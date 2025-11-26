@@ -1,3 +1,18 @@
+<?php
+$conn = new mysqli("localhost", "root", "", "andes_db");
+$result = $conn->query("SELECT * FROM products");
+
+$products = [];
+while ($row = $result->fetch_assoc()) {
+
+    // FIX: auto-correct image path (your DB probably only stores filename)
+    if (!str_starts_with($row["image"], "../")) {
+        $row["image"] = "../assets/image/" . $row["image"];
+    }
+
+    $products[] = $row;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,13 +49,16 @@
   <nav class="navbar">
     <div class="navdiv">
       <div class="logo">
-        <a href="../index.html"><img src="../assets/image/logo.png" alt="logo" /></a>
-        <a href="../index.html"><p>FLOWER PUFF</p></a>
+        <a href="../index.php"><img src="../assets/image/logo.png" alt="logo" /></a>
+        <a href="../index.php"><p>FLOWER PUFF</p></a>
       </div>
       <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="./shop.html">Shop</a></li>
-        <li><a href="./about.html">About</a></li>
+        <li><a href="../index.php">Home</a></li>
+
+        <!-- FIXED: shop.php not shop.html -->
+        <li><a href="./shop.php">Shop</a></li>
+
+        <li><a href="./about.php">About</a></li>
         <li>
           <a href="./cart.html" class="cart-link">
             <i class="fa-solid fa-cart-shopping cart-icon"></i>
@@ -91,12 +109,32 @@
   </footer>
 
   <!-- Script -->
-  <script>
-// ======== LOAD PRODUCTS FROM LOCALSTORAGE ========
-let products = JSON.parse(localStorage.getItem("products")) || [];
+<script>
+// LOAD PRODUCTS FROM MYSQL via AJAX so the page always shows current DB state
+let products = [];
 
+async function loadProducts() {
+  try {
+    const resp = await fetch('../api/get_products.php');
+    const data = await resp.json();
+    // normalize image paths (DB may store only filename)
+    products = data.map(row => {
+      if (!row.image || !row.image.startsWith('../')) {
+        row.image = '../assets/image/' + row.image;
+      }
+      return row;
+    });
+    renderShop();
+  } catch (err) {
+    console.error('Failed to load products:', err);
+    shopList.innerHTML = '<p>Failed to load products.</p>';
+  }
+}
+
+// DOM
 const shopList = document.getElementById("shopList");
 
+// RENDER PRODUCTS (same as before)
 function renderShop() {
   shopList.innerHTML = "";
 
@@ -124,35 +162,36 @@ function renderShop() {
   });
 }
 
-// ======== ADD TO CART FUNCTION ========
+// ADD TO CART (same as before)
 function addToCart(index, button) {
   const product = products[index];
   if (!product || product.stock <= 0) return;
 
-  // 🛒 Update stock
   product.stock--;
-  localStorage.setItem("products", JSON.stringify(products));
 
-  // 🛍️ Add to cart
+  // update local storage cart
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const existing = cart.find(item => item.name === product.name);
-  if (existing) {
-    existing.quantity++;
-  } else {
-    cart.push({ name: product.name, price: product.price, image: product.image, quantity: 1 });
-  }
+
+  if (existing) existing.quantity++;
+  else cart.push({ 
+    name: product.name, 
+    price: product.price, 
+    image: product.image, 
+    quantity: 1 
+  });
+
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  // ✅ Animate image
+  // animation
   const img = button.closest("li").querySelector("img");
   animateToCart(img);
 
-  // ✅ Update shop view and cart counter (without clearing)
   renderShop();
   updateCartCount();
 }
 
-// ======== ANIMATION ========
+// Flying animation
 function animateToCart(img) {
   const cartIcon = document.querySelector(".cart-icon");
   if (!cartIcon || !img) return;
@@ -175,16 +214,20 @@ function animateToCart(img) {
   flyingImg.addEventListener("transitionend", () => flyingImg.remove());
 }
 
-// ======== UPDATE CART COUNT ========
+// UPDATE CART COUNT
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const total = cart.reduce((sum, i) => sum + i.quantity, 0);
   document.getElementById("cart-count").textContent = total;
 }
 
-// ======== INITIALIZE ========
-renderShop();
+// START
+loadProducts();
 updateCartCount();
+
+// NOTE: stock updates to the server are not implemented here yet.
+// If you want purchases to decrement stock on the server, I can add an API call.
 </script>
+
 </body>
 </html>

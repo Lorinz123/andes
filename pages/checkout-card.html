@@ -17,9 +17,9 @@
         <p>FLOWER PUFF</p>
       </div>
       <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="../index.php">Home</a></li>
+        <li><a href="shop.php">Shop</a></li>
+        <li><a href="about.php">About</a></li>
       </ul>
     </div>
   </nav>
@@ -70,9 +70,87 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById("placeOrderBtn").addEventListener("click", function() {
-  window.location.href = "success.html";
-    })
+  // create inline message element
+  const topSection = document.querySelector('.payment-section');
+  let cardMsgEl = null;
+  if (topSection) {
+    cardMsgEl = document.createElement('div');
+    cardMsgEl.id = 'cardMessage';
+    cardMsgEl.style.cssText = 'color:#b00020;font-weight:600;margin-bottom:12px;display:none;';
+    topSection.insertBefore(cardMsgEl, topSection.firstChild);
+  }
+
+  function showCardMessage(text) {
+    if (!cardMsgEl) return;
+    cardMsgEl.textContent = text;
+    cardMsgEl.style.display = 'block';
+    cardMsgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => { cardMsgEl.style.display = 'none'; }, 6000);
+  }
+
+  document.getElementById("placeOrderBtn").addEventListener("click", async function(e) {
+    // Check cart
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (!cart || cart.length === 0) {
+      showCardMessage('Your cart is empty. Add items before placing an order.');
+      return;
+    }
+
+    // Validate card fields
+    const required = ['cardNumber', 'cardName', 'expiryDate', 'cvv'];
+    const missing = required.filter(id => {
+      const el = document.getElementById(id);
+      return !el || el.value.trim() === '';
+    });
+    if (missing.length > 0) {
+      showCardMessage('Please complete all card details before placing your order.');
+      return;
+    }
+
+    // Basic CVV numeric check
+    const cvv = document.getElementById('cvv').value.trim();
+    if (!/^[0-9]{3,4}$/.test(cvv)) {
+      showCardMessage('Please enter a valid CVV (3 or 4 digits).');
+      return;
+    }
+
+    // Basic card number check (digits and length)
+    const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
+    if (!/^[0-9]{12,19}$/.test(cardNumber)) {
+      showCardMessage('Please enter a valid card number.');
+      return;
+    }
+
+    // All good — save order server-side, store response locally, clear cart and proceed to success
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const subtotal = (cart || []).reduce((s, it) => s + (parseFloat(it.price) || 0) * (parseInt(it.quantity) || 0), 0);
+      const order = {
+        items: cart,
+        subtotal: subtotal,
+        customer: null,
+        shipping: null,
+        payment: 'Card',
+        placedAt: new Date().toISOString()
+      };
+
+      const resp = await fetch('../api/save_order.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+      const result = await resp.json();
+      if (!result || !result.success) {
+        console.error('Failed to save card order:', result);
+        showCardMessage('Failed to place order. Please try again.');
+        return;
+      }
+
+      sessionStorage.setItem('lastOrder', JSON.stringify(result.order));
+    } catch (e) { console.warn('Could not build order summary:', e); showCardMessage('Failed to place order. Please try again.'); return; }
+    try { localStorage.removeItem('cart'); } catch (e) { console.warn('Could not clear cart:', e); }
+    window.location.href = "success.html";
+  });
 </script>
 </body>
 </html>
